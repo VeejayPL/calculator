@@ -121,5 +121,9 @@ function multiply() {
   return Number(memoryValue) * Number(inputValue);
 }
 function divide() {
-  return Number(memoryValue) / Number(inputValue);
+  if (inputValue == 0) {
+    return `Whoopsie! Don't divide by 0 ;-)`;
+  } else {
+    return Number(memoryValue) / Number(inputValue);
+  }
 }
