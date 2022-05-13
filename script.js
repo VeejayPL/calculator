@@ -24,6 +24,7 @@ const operatorButton = document
   .querySelectorAll(".operator")
   .forEach((element) =>
     element.addEventListener("click", (e) => {
+      // if (inputValue != 0 && memoryValue != 0) return operate();
       operatorSign = e.target.innerHTML;
       memoryValue = inputValue;
       memory.textContent = `${memoryValue} ${operatorSign} `;
@@ -31,31 +32,22 @@ const operatorButton = document
     })
   );
 
-// Reset AC
+// Reset button
 const ac = document.querySelector("#clear").addEventListener("click", () => {
   reset();
 });
 
-// Equal sign
+// Equals to button
 const equalSign = document
   .querySelector("#equal")
   .addEventListener("click", () => {
     // Prevent undefined error when pressing equal button multiple times
     if (memoryValue == 0 && result == 0) return reset();
     if (memoryValue == 0 && result != 0) return reset();
-    result = operate(inputValue, memoryValue, operatorSign);
-    memory.textContent = `${memoryValue} ${operatorSign} ${inputValue}`;
-    input.textContent = result;
-    if (result === `Whoopsie! Don't divide by 0 ;-)`) {
-      inputValue = memoryValue;
-    } else {
-      inputValue = result;
-      memoryValue = "";
-      operatorSign = "";
-    }
+    operate();
+    operatorSign = "";
   });
-
-// Positive and negative numbers
+// Positive and negative numbers button
 const changeSign = document
   .querySelector("#plusminus")
   .addEventListener("click", () => {
@@ -65,7 +57,7 @@ const changeSign = document
     input.textContent = inputValue;
   });
 
-// Decimals
+// Decimals button
 const decimalButton = document
   .querySelector(".dot")
   .addEventListener("click", () => {
@@ -77,7 +69,7 @@ const decimalButton = document
     inputValue.includes(".") ? inputValue : (inputValue += ".");
   });
 
-// Percent
+// Percent button
 const percentButton = document
   .querySelector(".percent")
   .addEventListener("click", () => {
@@ -85,8 +77,20 @@ const percentButton = document
     return (input.textContent = inputValue);
   });
 
-// Calculations
+// Operate function
 function operate() {
+  result = calculate(inputValue, memoryValue, operatorSign);
+  memory.textContent = `${memoryValue} ${operatorSign} ${inputValue}`;
+  input.textContent = result;
+  if (result === `Whoopsie! Don't divide by 0 ;-)`) {
+    inputValue = memoryValue;
+  } else {
+    inputValue = result;
+    memoryValue = "";
+  }
+}
+// Calculations
+function calculate() {
   if (operatorSign === "+") return Number(memoryValue) + Number(inputValue);
   if (operatorSign === "-") return Number(memoryValue) - Number(inputValue);
   if (operatorSign === "*") return Number(memoryValue) * Number(inputValue);
