@@ -47,6 +47,7 @@ const equalSign = document
     operate();
     operatorSign = "";
   });
+
 // Positive and negative numbers button
 const changeSign = document
   .querySelector("#plusminus")
@@ -73,8 +74,10 @@ const decimalButton = document
 const percentButton = document
   .querySelector(".percent")
   .addEventListener("click", () => {
+    // prevent the % out of 0
+    if (inputValue == 0) return reset();
     inputValue = Number(inputValue) / 100;
-    result = round(inputValue, 3).toString();
+    result = round(inputValue, 10).toString();
     return (input.textContent = result);
   });
 
@@ -82,7 +85,7 @@ const percentButton = document
 function operate() {
   result = calculate(inputValue, memoryValue, operatorSign);
   memory.textContent = `${memoryValue} ${operatorSign} ${inputValue}`;
-  input.textContent = round(result, 3).toString();
+  input.textContent = round(result, 10).toString();
   if (result === `Whoopsie! Don't divide by 0 ;-)`) {
     inputValue = memoryValue;
   } else {
