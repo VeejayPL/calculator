@@ -6,16 +6,22 @@ let inputValue = "";
 let memoryValue = "";
 let result = 0;
 let operatorSign = "";
+let secondOperator = "";
 
 // Assign click event to all number buttons
 // append input/result display with values
+// limit the length of input to 10
 const numberButton = document.querySelectorAll(".number").forEach((element) =>
   element.addEventListener("click", (e) => {
     if (result != 0 && operatorSign == 0) {
       reset();
     }
-    inputValue += e.target.innerHTML;
-    return (input.textContent = inputValue);
+    if (inputValue.length > 10) {
+      inputValue.substring(0, 10);
+    } else {
+      inputValue += e.target.innerHTML;
+    }
+    return (input.textContent = round(inputValue, 10)).toString();
   })
 );
 
@@ -83,9 +89,12 @@ const percentButton = document
 
 // Operate function
 function operate() {
-  result = calculate(inputValue, memoryValue, operatorSign);
+  result = round(
+    calculate(inputValue, memoryValue, operatorSign),
+    10
+  ).toString();
   memory.textContent = `${memoryValue} ${operatorSign} ${inputValue}`;
-  input.textContent = round(result, 10).toString();
+  input.textContent = result;
   if (result === `Whoopsie! Don't divide by 0 ;-)`) {
     inputValue = memoryValue;
   } else {
@@ -111,7 +120,7 @@ function round(num, places) {
 function reset() {
   inputValue = "";
   memoryValue = "";
-  result = 0;
+  result = "";
   operatorSign = "";
   input.textContent = "0";
   memory.textContent = "";
