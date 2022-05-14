@@ -74,14 +74,15 @@ const percentButton = document
   .querySelector(".percent")
   .addEventListener("click", () => {
     inputValue = Number(inputValue) / 100;
-    return (input.textContent = inputValue);
+    result = round(inputValue, 3).toString();
+    return (input.textContent = result);
   });
 
 // Operate function
 function operate() {
   result = calculate(inputValue, memoryValue, operatorSign);
   memory.textContent = `${memoryValue} ${operatorSign} ${inputValue}`;
-  input.textContent = result;
+  input.textContent = round(result, 3).toString();
   if (result === `Whoopsie! Don't divide by 0 ;-)`) {
     inputValue = memoryValue;
   } else {
@@ -99,7 +100,10 @@ function calculate() {
       ? `Whoopsie! Don't divide by 0 ;-)`
       : Number(memoryValue) / Number(inputValue);
 }
-
+// Round results
+function round(num, places) {
+  return parseFloat(Math.round(num + "e" + places) + "e-" + places);
+}
 // Reset function
 function reset() {
   inputValue = "";
