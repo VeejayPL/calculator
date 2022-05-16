@@ -90,7 +90,9 @@ const decimalButton = document
       inputValue += ".";
       input.textContent = inputValue;
     }
-    inputValue.includes(".") ? inputValue : (inputValue += ".");
+    inputValue.includes(".")
+      ? inputValue
+      : (input.textContent = inputValue += ".");
   });
 
 // Percent button
