@@ -30,11 +30,21 @@ const operatorButton = document
   .querySelectorAll(".operator")
   .forEach((element) =>
     element.addEventListener("click", (e) => {
-      // if (inputValue != 0 && memoryValue != 0) return operate();
-      operatorSign = e.target.innerHTML;
-      memoryValue = inputValue;
-      memory.textContent = `${memoryValue} ${operatorSign} `;
-      inputValue = "";
+      if (operatorSign != 0) {
+        operatorSign = "";
+        secondOperator = e.target.innerHTML;
+        memory.textContent = `${memoryValue} ${operatorSign}`;
+        operate(memoryValue, inputValue, operatorSign);
+      } else if (operatorSign == 0 && secondOperator != 0) {
+        memory.textContent = `${memoryValue} ${secondOperator}`;
+        operate(memoryValue, inputValue, secondOperator);
+        secondOperator = "";
+      } else {
+        operatorSign = e.target.innerHTML;
+        memoryValue = inputValue;
+        memory.textContent = `${memoryValue} ${operatorSign}`;
+        inputValue = "";
+      }
     })
   );
 
@@ -52,6 +62,7 @@ const equalSign = document
     if (memoryValue == 0 && result != 0) return reset();
     operate();
     operatorSign = "";
+    secondOperator = "";
   });
 
 // Positive and negative numbers button
@@ -89,13 +100,10 @@ const percentButton = document
 
 // Operate function
 function operate() {
-  result = round(
-    calculate(inputValue, memoryValue, operatorSign),
-    10
-  ).toString();
-  memory.textContent = `${memoryValue} ${operatorSign} ${inputValue}`;
+  result = calculate(inputValue, memoryValue, operatorSign, secondOperator);
+  memory.textContent = `${memoryValue} ${operatorSign}${secondOperator} ${inputValue}`;
   input.textContent = result;
-  if (result === `Whoopsie! Don't divide by 0 ;-)`) {
+  if (result === `Ooops`) {
     inputValue = memoryValue;
   } else {
     inputValue = result;
@@ -104,24 +112,30 @@ function operate() {
 }
 // Calculations
 function calculate() {
-  if (operatorSign === "+") return Number(memoryValue) + Number(inputValue);
-  if (operatorSign === "-") return Number(memoryValue) - Number(inputValue);
-  if (operatorSign === "*") return Number(memoryValue) * Number(inputValue);
-  if (operatorSign === "/")
+  if (operatorSign == "+" || secondOperator == "+")
+    return round(Number(memoryValue) + Number(inputValue), 5);
+  if (operatorSign == "-" || secondOperator == "-")
+    return round(Number(memoryValue) - Number(inputValue), 5);
+  if (operatorSign == "*" || secondOperator == "*")
+    return round(Number(memoryValue) * Number(inputValue), 5);
+  if (operatorSign == "/" || secondOperator == "/")
     return inputValue == 0
-      ? `Whoopsie! Don't divide by 0 ;-)`
-      : Number(memoryValue) / Number(inputValue);
+      ? `Ooops`
+      : round(Number(memoryValue) / Number(inputValue), 5);
 }
+
 // Round results
 function round(num, places) {
   return parseFloat(Math.round(num + "e" + places) + "e-" + places);
 }
+
 // Reset function
 function reset() {
   inputValue = "";
   memoryValue = "";
   result = "";
   operatorSign = "";
+  secondOperator = "";
   input.textContent = "0";
   memory.textContent = "";
   return;
