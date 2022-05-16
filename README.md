@@ -13,4 +13,5 @@ Input value is limited to 11 digits. The result is rounded to 5 decimal points.
 
 ## To do list
 
-Clean up the code
+- rearange the code to be more function based
+- fix issue with the operators being pressed without the values
