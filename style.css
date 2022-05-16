@@ -43,9 +43,12 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 2rem 0.5rem;
+  padding: 0rem 0.5rem;
   margin: 0 0.3rem 0.1rem 0.3rem;
   border-radius: 15px;
+}
+.memory {
+  font-size: 2rem;
 }
 .buttons {
   height: 45vh;
