@@ -1,3 +1,4 @@
+// Display
 const input = document.querySelector("#input");
 const memory = document.querySelector("#memory");
 
@@ -13,7 +14,7 @@ let secondOperator = "";
 // limit the length of input to 10
 const numberButton = document.querySelectorAll(".number").forEach((element) =>
   element.addEventListener("click", (e) => {
-    if (result != 0 && operatorSign == 0) {
+    if (result != 0 && operatorSign == 0 && secondOperator == 0) {
       reset();
     }
     if (inputValue.length > 10) {
@@ -31,14 +32,19 @@ const operatorButton = document
   .forEach((element) =>
     element.addEventListener("click", (e) => {
       if (operatorSign != 0) {
+        operate(memoryValue, inputValue, operatorSign);
         operatorSign = "";
         secondOperator = e.target.innerHTML;
-        memory.textContent = `${memoryValue} ${operatorSign}`;
-        operate(memoryValue, inputValue, operatorSign);
+        memory.textContent = `${inputValue} ${secondOperator}`;
+        memoryValue = inputValue;
+        inputValue = "";
       } else if (operatorSign == 0 && secondOperator != 0) {
-        memory.textContent = `${memoryValue} ${secondOperator}`;
         operate(memoryValue, inputValue, secondOperator);
         secondOperator = "";
+        operatorSign = e.target.innerHTML;
+        memory.textContent = `${inputValue} ${operatorSign}`;
+        memoryValue = inputValue;
+        inputValue = "";
       } else {
         operatorSign = e.target.innerHTML;
         memoryValue = inputValue;
@@ -58,8 +64,8 @@ const equalSign = document
   .querySelector("#equal")
   .addEventListener("click", () => {
     // Prevent undefined error when pressing equal button multiple times
-    if (memoryValue == 0 && result == 0) return reset();
-    if (memoryValue == 0 && result != 0) return reset();
+    if (memoryValue == 0 && result == 0 && inputValue == 0) return reset();
+    if (memoryValue == 0 && result != 0 && inputValue == 0) return reset();
     operate();
     operatorSign = "";
     secondOperator = "";
@@ -101,7 +107,7 @@ const percentButton = document
 // Operate function
 function operate() {
   result = calculate(inputValue, memoryValue, operatorSign, secondOperator);
-  memory.textContent = `${memoryValue} ${operatorSign}${secondOperator} ${inputValue}`;
+  memory.textContent = `${memoryValue} ${operatorSign}${secondOperator} ${inputValue} =`;
   input.textContent = result;
   if (result === `Ooops`) {
     inputValue = memoryValue;
