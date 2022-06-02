@@ -2,6 +2,8 @@
 
 Made as a project from The Odin Project - Foundations curriculum.
 
+![Calculator screenshot](https://github.com/VeejayPL/calculator/blob/main/calc.png)
+
 [Calculator preview](https://veejaypl.github.io/calculator/)
 
 The calculator has two displays:
